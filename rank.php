@@ -39,11 +39,11 @@
     </ol>
   </nav>
   <div class="page-header text-center">
-    <h1>排行榜(<?php echo $title; ?>榜)</h1>
+    <h1>排行榜 - <?php echo $title; ?>榜</h1>
     <a href="?lbtype=day<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">日榜</button></a>
     <a href="?lbtype=week<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">周榜</button></a>
     <a href="?lbtype=month<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">月榜</button></a>
-    <br/>tips:大家不要作弊哦~ฅ'ω'ฅ♪
+    <br/>tips:大家不要作弊哦~ฅ'ω'ฅ♪ 另外，如果你未在游戏前填写昵称，你的记录就不会上榜 awa
   </div>
   <div class="list-group">
     <?php
@@ -58,9 +58,9 @@
       while ($data_stmt->fetch()) {
         $rank += 1;
         echo "<a href='#' class='list-group-item list-group-item-action'><div class='d-flex w-100 justify-content-between'>
-            <h5 class='mb-1'>" . $rank . "位   " . $name . "</h5><small>" . $time . "</small></div>
-            <p class='mb-1'>SCORE: " . $score . " TRY: " . $attempts . " -" . $system . " -" . $area . "</p>
-            <small>" . ($message ? $message : "这个人很懒什么也没留下") . "</small></a>";
+            <h5 class='mb-1'>第" . $rank . "名   " . $name . "  " . $score . "分</h5><small>" . $time . "</small></div>
+            <p class='mb-1'>尝试了" . $attempts . "次 - " . $system . " - " . $area . "</p>
+            <small>" . ($message ? $message : "这个人很懒什么也没留下，也不知道是怎么考生重点中学的") . "</small></a>";
       }
       $data_stmt->close();
     }
@@ -110,7 +110,7 @@
           }
           $score_stmt->close();
         } else {
-          echo "小提示：你玩前还没有填名字";
+          echo "注意：你玩前还没有填名字";
         }
         $link->close();
         ?>
