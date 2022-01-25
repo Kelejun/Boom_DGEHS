@@ -40,25 +40,26 @@
                 <div style="font-size:2.6em; color:#FEF002;">新概念音游</div><br />
                 <div style="font-size:2.2em; color:#fff; line-height:1.5em;">
                     从最底下的电箱开始<br />
-                    看看你20秒能多少分<br />
+                    看看你20秒能炸多少个<br />
                 </div>
                 <br />
                 <div id="btn_group" style="display: block;">
                     <button type="button" id="ready-btn" class="btn btn-primary loading btn-lg">点击开始</button>
                     <br /><br />
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="show_setting()">按键设置(PC)</button>
                 </div>
                 <div id="setting" style="display: none;">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">名字</span>
+                            <span class="input-group-text" id="basic-addon1">昵称</span>
                         </div>
-                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于纪录排行(特殊字符会被过滤)">
+                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="排行榜不可用">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">留言</span>
                         </div>
-                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁广告/脏话(本项可不填)">
+                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="排行榜不可用">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
