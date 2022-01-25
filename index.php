@@ -52,7 +52,7 @@
                 <div id="setting" style="display: none;">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">名字</span>
+                            <span class="input-group-text" id="basic-addon1">昵称</span>
                         </div>
                         <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于纪录排行(特殊字符会被过滤)">
                     </div>
@@ -66,7 +66,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">按键</span>
                         </div>
-                        <input type="text" id="keyboard" class="form-control" maxlength=4 placeholder="默认为DFJK">
+                        <input type="text" id="keyboard" class="form-control" maxlength=4 placeholder="默认为DFJK，PC端键盘使用">
                     </div>
                     <button type="button" class="btn btn-secondary btn-lg" onclick="show_btn();save_cookie();">完成</button>
                 </div>
