@@ -28,7 +28,8 @@
             <div id="GameScoreLayer-score" style="margin:10px 0;">得分</div>
             <div id="GameScoreLayer-bast">最佳</div>
             <button type="button" class="btn btn-secondary btn-lg" onclick="replayBtn()">重来</button>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">开源</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">开源(原版)</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/Boom_DGEHS'">开源(实验版)</button>
         </div>
     </div>
     </div>
@@ -45,7 +46,6 @@
                 <div id="btn_group" style="display: block;">
                     <button type="button" id="ready-btn" class="btn btn-primary loading btn-lg">点击开始</button>
                     <br /><br />
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="show_setting()">游戏设置</button>
                 </div>
                 <div id="setting" style="display: none;">
                     <div class="input-group mb-3">
