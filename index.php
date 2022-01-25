@@ -28,6 +28,7 @@
             <div id="GameScoreLayer-score" style="margin:10px 0;">得分</div>
             <div id="GameScoreLayer-bast">最佳</div>
             <button type="button" class="btn btn-secondary btn-lg" onclick="replayBtn()">重来</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">开源(原版)</button>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/Boom_DGEHS'">开源(实验版)</button>
         </div>
@@ -46,20 +47,20 @@
                 <div id="btn_group" style="display: block;">
                     <button type="button" id="ready-btn" class="btn btn-primary loading btn-lg">点击开始</button>
                     <br /><br />
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="show_setting()">按键设置(PC)</button>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="show_setting()">排行榜昵称及PC按键设置</button>
                 </div>
                 <div id="setting" style="display: none;">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">昵称</span>
+                            <span class="input-group-text" id="basic-addon1">名字</span>
                         </div>
-                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="排行榜不可用">
+                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于纪录排行(特殊字符会被过滤)">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">留言</span>
                         </div>
-                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="排行榜不可用">
+                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁广告/脏话(本项可不填)">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
