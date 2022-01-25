@@ -343,11 +343,11 @@ function shareText(score) {
         return '倒计时多了' + ((deviation_time / 1000) - 20).toFixed(2) + "s";
     }
     SubmitResults();
-    if (score <= 49) return '试着好好练一下？';
-    if (score <= 99) return 'TCL';
-    if (score <= 149) return 'TQL';
-    if (score <= 199) return '您';
-    return '人？';
+    if (score <= 19) return '搞事被宿管抓走，扣分';
+    if (score <= 59) return '三栋已成废墟[lay in ruins]';
+    if (score <= 109) return '塔中已升天';
+    if (score <= 169) return '从此再无大塘头村';
+    return '东莞都没了草';
 }
 
 function toStr(obj) {
