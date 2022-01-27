@@ -5,16 +5,53 @@ document.write('<style type="text/css">' +
     (isDesktop ? '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position: absolute;}' :
         '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position:fixed;}@media screen and (orientation:landscape) {#landscape {display: box; display: -webkit-box; display: -moz-box; display: -ms-flexbox;}}') +
     '</style>');
-let map = {'d': 1, 'f': 2, 'j': 3, 'k': 4};
-if (isDesktop){
+let map = { 'd': 1, 'f': 2, 'j': 3, 'k': 4 };
+let key = ['!'];
+let len = key.length;
+let hide = false;
+let __Time = 20;
+let __k = 4;
+
+function isplaying() {
+    return document.getElementById('welcome').style.display == 'none' &&
+        document.getElementById('GameScoreLayer').style.display == 'none' &&
+        document.getElementById("setting").style.display == 'none';
+}
+
+function gl() {
+    let tmp = [];
+    len = key.length;
+    for (let i = 0; i < len; ++i) {
+        console.log(key[i]);
+        if (key[i] == '@' || key[i] == '!' || key[i] == '#' || (key[i] >= '1' && key[i] <= __k.toString())) {
+            tmp.push(key[i]);
+        }
+        else if (key[i] == '！') {
+            tmp.push('!');
+        }
+        console.log(tmp);
+    }
+    key = tmp;
+    if (key.length == 0) {
+        key = ['!'];
+    }
+    len = key.length;
+}
+
+if (isDesktop) {
     document.write('<div id="gameBody">');
     document.onkeydown = function (e) {
         let key = e.key.toLowerCase();
-        if (Object.keys(map).indexOf(key) !== -1) {
-            click(map[key])
+        if (Object.keys(map).indexOf(key) !== -1 && isplaying()) {
+            click(map[key]);
+        }
+        else if (key == 'r' && document.getElementById('GameScoreLayer').style.display != 'none') {
+            gameRestart();
+            document.getElementById('GameScoreLayer').style.display = 'none'
         }
     }
 }
+
 let body, blockSize, GameLayer = [],
     GameLayerBG, touchArea = [],
     GameTimeLayer;
@@ -68,8 +105,8 @@ function _refreshSize() {
         for (let j = 0; j < box.children.length; j++) {
             let r = box.children[j],
                 rstyle = r.style;
-            rstyle.left = (j % 4) * blockSize + 'px';
-            rstyle.bottom = Math.floor(j / 4) * blockSize + 'px';
+            rstyle.left = (j % __k) * blockSize + 'px';
+            rstyle.bottom = Math.floor(j / __k) * blockSize + 'px';
             rstyle.width = blockSize + 'px';
             rstyle.height = blockSize + 'px';
         }
@@ -85,12 +122,12 @@ function _refreshSize() {
     let y = ((_gameBBListIndex) % 10) * blockSize;
     f.y = y;
     f.style[transform] = 'translate3D(0,' + f.y + 'px,0)';
-    a.y = -blockSize * Math.floor(f.children.length / 4) + y;
+    a.y = -blockSize * Math.floor(f.children.length / __k) + y;
     a.style[transform] = 'translate3D(0,' + a.y + 'px,0)';
 }
 
 function countBlockSize() {
-    blockSize = body.offsetWidth / 4;
+    blockSize = body.offsetWidth / __k;
     body.style.height = window.innerHeight + 'px';
     GameLayerBG.style.height = window.innerHeight + 'px';
     touchArea[0] = window.innerHeight - blockSize * 0;
@@ -118,13 +155,17 @@ function gameInit() {
     gameRestart();
 }
 
+let last = 0, lkey = 0;
+
 function gameRestart() {
+    last = 0;
+    lkey = 0;
     _gameBBList = [];
     _gameBBListIndex = 0;
     _gameScore = 0;
     _gameOver = false;
     _gameStart = false;
-    _gameTimeNum = 20;
+    _gameTimeNum = __Time;
     GameTimeLayer.innerHTML = creatTimeText(_gameTimeNum);
     countBlockSize();
     refreshGameLayer(GameLayer[0]);
@@ -134,10 +175,14 @@ function gameRestart() {
 function gameStart() {
     _date1 = new Date();
     _gameStart = true;
+    _gameTimeNum = __Time;
     _gameTime = setInterval(gameTime, 1000);
 }
 
+let date2 = new Date();
+
 function gameOver() {
+    date2 = new Date();
     _gameOver = true;
     clearInterval(_gameTime);
     setTimeout(function () {
@@ -146,38 +191,10 @@ function gameOver() {
     }, 1500);
 }
 
-
-function encrypt(text) {
-    let encrypt = new JSEncrypt();
-    encrypt.setPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDTzGwX6FVKc7rDiyF3H+jKpBlRCV4jOiJ4JR33qZPVXx8ahW6brdBF9H1vdHBAyO6AeYBumKIyunXP9xzvs1qJdRNhNoVwHCwGDu7TA+U4M7G9FArDG0Y6k4LbS0Ks9zeRBMiWkW53yQlPshhtOxXCuZZOMLqk1vEvTCODYYqX5QIDAQAB");
-    let data = encrypt.encrypt(text);
-    return data;
-}
-
-function SubmitResults() {
-    let system = "其他操作系统";
-    let area = "异世界";
-    if (document.getElementById("username").value) {
-        if (navigator.appVersion.indexOf("Win") != -1) system = "Windows";
-        if (navigator.appVersion.indexOf("Mac") != -1) system = "Macintosh";
-        if (navigator.appVersion.indexOf("Linux") != -1) system = "Linux";
-        if (navigator.appVersion.indexOf("Android") != -1) system = "Android";
-        if (navigator.appVersion.indexOf("like Mac") != -1) system = "iOS";
-        if (returnCitySN['cname']) { area = returnCitySN['cname'] };
-        let httpRequest = new XMLHttpRequest();
-        httpRequest.open('POST', './SubmitResults.php', true);
-        httpRequest.setRequestHeader("Content-type", "application/json");
-        let name = document.getElementById("username").value;
-        let message = document.getElementById("message").value;
-        let test = "|_|";
-        httpRequest.send(encrypt(_gameScore + test + name + test + tj + test + system + test + area + test + message));
-    }
-}
-
 function gameTime() {
     _gameTimeNum--;
     if (_gameTimeNum <= 0) {
-        GameTimeLayer.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;时间到！';
+        GameTimeLayer.innerHTML = '时!间!到!';
         gameOver();
         GameLayerBG.className += ' flash';
         createjs.Sound.play("end");
@@ -187,29 +204,144 @@ function gameTime() {
 }
 
 function creatTimeText(n) {
-    return '&nbsp;TIME:' + n;
+    return '剩' + n + '秒';
 }
+
 let _ttreg = / t{1,2}(\d+)/,
     _clearttClsReg = / t{1,2}\d+| bad/;
 
 function refreshGameLayer(box, loop, offset) {
-    let i = Math.floor(Math.random() * 1000) % 4 + (loop ? 0 : 4);
+    let i = 0;
+    if (key[last] == '!') {
+        i = Math.floor(Math.random() * 1000) % __k;
+        let pos = last - 1;
+        if (pos == -1) {
+            pos = len - 1;
+        }
+        if (key[pos] == '@') {
+            if (i == lkey) {
+                i++;
+                if (i == __k) {
+                    i = 0;
+                }
+            }
+        }
+    }
+    else if (key[last] == '@') {
+        i = Math.floor(Math.random() * 1000) % __k;
+        let pos = last + 1;
+        if (pos == len) {
+            pos = 0;
+        }
+        if (key[pos] >= '1' && key[pos] <= __k.toString()) {
+            if (i == parseInt(key[pos]) - 1) {
+                i++;
+                if (i == __k) {
+                    i = 0;
+                }
+            }
+        }
+        if (i == lkey) {
+            i++;
+            if (i == __k) {
+                i = 0;
+            }
+        }
+        if (key[pos] >= '1' && key[pos] <= __k.toString()) {
+            if (i == parseInt(key[pos]) - 1) {
+                i++;
+                if (i == __k) {
+                    i = 0;
+                }
+            }
+        }
+    }
+    else if (key[last] == '#') {
+        i = lkey;
+    }
+    else {
+        i = parseInt(key[last]) - 1;
+    }
+    lkey = i;
+    i += (loop ? 0 : __k);
+    last++;
+    if (last == len) {
+        last = 0;
+    }
     for (let j = 0; j < box.children.length; j++) {
         let r = box.children[j],
             rstyle = r.style;
-        rstyle.left = (j % 4) * blockSize + 'px';
-        rstyle.bottom = Math.floor(j / 4) * blockSize + 'px';
+        rstyle.left = (j % __k) * blockSize + 'px';
+        rstyle.bottom = Math.floor(j / __k) * blockSize + 'px';
         rstyle.width = blockSize + 'px';
         rstyle.height = blockSize + 'px';
         r.className = r.className.replace(_clearttClsReg, '');
         if (i == j) {
             _gameBBList.push({
-                cell: i % 4,
+                cell: i % __k,
                 id: r.id
             });
-            r.className += ' t' + (Math.floor(Math.random() * 1000) % 5 + 1);
+            r.className += ' t' + (Math.floor(Math.random() * 1000) % __k + 1);
             r.notEmpty = true;
-            i = (Math.floor(j / 4) + 1) * 4 + Math.floor(Math.random() * 1000) % 4;
+            if (j < box.children.length - 4) {
+                i = 0;
+                if (key[last] == '!') {
+                    i = Math.floor(Math.random() * 1000) % __k;
+                    let pos = last - 1;
+                    if (pos == -1) {
+                        pos = len - 1;
+                    }
+                    if (key[pos] == '@') {
+                        if (i == lkey) {
+                            i++;
+                            if (i == __k) {
+                                i = 0;
+                            }
+                        }
+                    }
+                }
+                else if (key[last] == '@') {
+                    i = Math.floor(Math.random() * 1000) % __k;
+                    let pos = last + 1;
+                    if (pos == len) {
+                        pos = 0;
+                    }
+                    if (key[pos] >= '1' && key[pos] <= __k.toString()) {
+                        if (i == parseInt(key[pos]) - 1) {
+                            i++;
+                            if (i == __k) {
+                                i = 0;
+                            }
+                        }
+                    }
+                    if (i == lkey) {
+                        i++;
+                        if (i == __k) {
+                            i = 0;
+                        }
+                    }
+                    if (key[pos] >= '1' && key[pos] <= __k.toString()) {
+                        if (i == parseInt(key[pos]) - 1) {
+                            i++;
+                            if (i == __k) {
+                                i = 0;
+                            }
+                        }
+                    }
+                }
+                else if (key[last] == '#') {
+                    i = lkey;
+                }
+                else {
+                    i = parseInt(key[last]) - 1;
+                }
+                lkey = i;
+                i += (Math.floor(j / __k) + 1) * __k;
+                last++;
+                if (last == len) {
+                    last = 0;
+                }
+            }
         } else {
             r.notEmpty = false;
         }
@@ -306,8 +438,7 @@ function showGameScoreLayer() {
     let c = document.getElementById(_gameBBList[_gameBBListIndex - 1].id).className.match(_ttreg)[1];
     l.className = l.className.replace(/bgc\d/, 'bgc' + c);
     document.getElementById('GameScoreLayer-text').innerHTML = shareText(_gameScore);
-    let score_text = '得分&nbsp;&nbsp;';
-    score_text += deviation_time < 23000 ? _gameScore : "<span style='color:red;'>" + _gameScore + "</span>";
+    let score_text = '得分&nbsp;&nbsp;' + deviation_time < 23000 ? _gameScore : + _gameScore + "<br/>平均点 " + average() + ' 下/秒';
     document.getElementById('GameScoreLayer-score').innerHTML = score_text;
     let bast = cookie('bast-score');
     if (deviation_time < 23000) {
@@ -316,8 +447,14 @@ function showGameScoreLayer() {
             cookie('bast-score', bast, 100);
         }
     }
-    document.getElementById('GameScoreLayer-bast').innerHTML = '最佳&nbsp;&nbsp;' + bast;
+    document.getElementById('GameScoreLayer-bast').innerHTML = '最佳得分为&nbsp;&nbsp;' + bast;
     l.style.display = 'block';
+}
+
+function average() {
+    let leftime = 20 - _gameTimeNum;
+    let averagenum = (_gameScore * 1.0 / leftime).toFixed(2);
+    return averagenum.substring(0,averagenum.lastIndexOf('.'));
 }
 
 function hideGameScoreLayer() {
@@ -337,17 +474,13 @@ function backBtn() {
 }
 
 function shareText(score) {
-    let date2 = new Date();
+
     deviation_time = (date2.getTime() - _date1.getTime())
-    if (deviation_time > 23000) {
-        return '倒计时多了' + ((deviation_time / 1000) - 20).toFixed(2) + "s";
-    }
-    SubmitResults();
-    if (score <= 19) return '搞事被宿管抓走，扣分';
-    if (score <= 59) return '三栋已成废墟[lay in ruins]';
-    if (score <= 109) return '塔中已升天';
-    if (score <= 169) return '从此再无大塘头村';
-    return '东莞都没了草';
+    if (score <= 2.5 * __Time) return '“搞事被宿管抓走，扣分”<br/>你的得分为：';
+    if (score <= 5 * __Time) return '“三栋已成废墟[lay in ruins]”<br/>你的得分为：';
+    if (score <= 7.5 * __Time) return '“塔中已升天”<br/>你的得分为：';
+    if (score <= 10 * __Time) return '“从此再无大塘头村”<br/>你的得分为：';
+    return '“东莞都没了草”<br/>你的得分为：';
 }
 
 function toStr(obj) {
@@ -378,34 +511,88 @@ function cookie(name, value, time) {
     for (let i = 0; value.length > i; i++) name = value[i].split("="), name[1] && (data[name[0]] = unescape(name[1]));
     return data;
 }
+
 document.write(createGameLayer());
 
 function initSetting() {
-    document.getElementById("username").value = cookie("username") ? cookie("username") : "";
-    document.getElementById("message").value = cookie("message") ? cookie("message") : "";
-    if(cookie("keyboard")){
+    if (cookie("keyboard")) {
         document.getElementById("keyboard").value = cookie("keyboard");
-        map={}
-        map[cookie("keyboard").charAt(0).toLowerCase()]=1;
-        map[cookie("keyboard").charAt(1).toLowerCase()]=2;
-        map[cookie("keyboard").charAt(2).toLowerCase()]=3;
-        map[cookie("keyboard").charAt(3).toLowerCase()]=4;
+        map = {}
+        map[cookie("keyboard").charAt(0).toLowerCase()] = 1;
+        map[cookie("keyboard").charAt(1).toLowerCase()] = 2;
+        map[cookie("keyboard").charAt(2).toLowerCase()] = 3;
+        map[cookie("keyboard").charAt(3).toLowerCase()] = 4;
+    }
+    if (cookie("limit")) {
+        document.getElementById("timeinput").value = cookie("limit");
+        __Time = parseInt(cookie("limit"));
+        GameTimeLayer.innerHTML = creatTimeText(__Time);
+    }
+    if (cookie("note")) {
+        let str = cookie("note").toString();
+        document.getElementById("note").value = str;
+        key = str.split('');
+        gl();
+        gameRestart();
+    }
+    if (cookie("hide")) {
+        if (cookie("hide").toString() == '1') {
+            hide = 1;
+        }
     }
 }
+
 function show_btn() {
-    document.getElementById("btn_group").style.display = "block"
-    document.getElementById("setting").style.display = "none"
+    document.getElementById("tt").style.display = "block";
+    document.getElementById("ttt").style.display = "block";
+    document.getElementById("btn_group").style.display = "block";
+    document.getElementById("btn_group2").style.display = "block";
+    document.getElementById("setting").style.display = "none";
 }
+
 function show_setting() {
-    document.getElementById("btn_group").style.display = "none"
-    document.getElementById("setting").style.display = "block"
+    var str = ['d', 'f', 'j', 'k'];
+    for (var ke in map) {
+        str[map[ke] - 1] = ke.charAt(0);
+    }
+    document.getElementById("keyboard").value = str.join('');
+    document.getElementById("timeinput").value = __Time.toString();
+    document.getElementById("note").value = key.join('');
+    document.getElementById("hide").checked = hide;
+    document.getElementById("btn_group").style.display = "none";
+    document.getElementById("btn_group2").style.display = "none";
+    document.getElementById("tt").style.display = "none";
+    document.getElementById("ttt").style.display = "none";
+    document.getElementById("setting").style.display = "block";
 }
+
 function save_cookie() {
-    cookie('username', document.getElementById("username").value, 100);
-    cookie('message', document.getElementById("message").value, 100);
-    cookie('keyboard', document.getElementById("keyboard").value, 100);
-    initSetting();
+    let str = document.getElementById("keyboard").value;
+    let Time = document.getElementById("timeinput").value;
+    let note = document.getElementById("note").value;
+    hide = document.getElementById("hide").checked;
+    map = {};
+    map[str.charAt(0).toLowerCase()] = 1;
+    map[str.charAt(1).toLowerCase()] = 2;
+    map[str.charAt(2).toLowerCase()] = 3;
+    map[str.charAt(3).toLowerCase()] = 4;
+    __Time = parseInt(Time);
+    GameTimeLayer.innerHTML = creatTimeText(__Time);
+    key = note.split('');
+    console.log(key);
+    gl();
+    cookie('keyboard', str, 100);
+    cookie('limit', Time, 100);
+    cookie('note', note, 100);
+    if (hide) {
+        cookie('hide', '1', 100);
+    }
+    else {
+        cookie('hide', '0', 100);
+    }
+    gameRestart();
 }
+
 function isnull(val) {
     let str = val.replace(/(^\s*)|(\s*$)/g, '');
     if (str == '' || str == undefined || str == null) {
@@ -413,14 +600,6 @@ function isnull(val) {
     } else {
         return false;
     }
-}
-function goRank() {
-    let name = document.getElementById("username").value;
-    let link = './rank.php';
-    if (!isnull(name)) {
-        link += "?name=" + name;
-    }
-    window.location.href = link;
 }
 
 function click(index) {
@@ -439,4 +618,47 @@ function click(index) {
     gameTapEvent(fakeEvent)
 }
 
-console.log("不修改，好嘛？乱传又有什么用呢？(ˉ▽ˉ；)...")
+function foreach() {
+    var strCookie = document.cookie;
+    var arrCookie = strCookie.split("; "); // 将多cookie切割为多个名/值对
+    for (var i = 0; i < arrCookie.length; i++) { // 遍历cookie数组，处理每个cookie对
+        var arr = arrCookie[i].split("=");
+        if (arr.length > 0)
+            DelCookie(arr[0]);
+    }
+}
+
+function GetCookieVal(offset) {
+    var endstr = document.cookie.indexOf(";", offset);
+    if (endstr == -1)
+        endstr = document.cookie.length;
+    return decodeURIComponent(document.cookie.substring(offset, endstr));
+}
+function DelCookie(name) {
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval = GetCookie(name);
+    document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
+}
+
+function GetCookie(name) {
+    var arg = name + "=";
+    var alen = arg.length;
+    var clen = document.cookie.length;
+    var i = 0;
+    while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg)
+            return GetCookieVal(j);
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0) break;
+    }
+    return null;
+}
+
+function autoset(asss) {
+    key = asss.split('');
+    len = key.length;
+    cookie('note', asss, 100);
+    gameRestart();
+}

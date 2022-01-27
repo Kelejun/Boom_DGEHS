@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <title>炸掉实验</title>
-    <meta itemprop="name" content="炸掉实验" />
+    <title>炸实验</title>
+    <meta itemprop="name" content="炸实验" />
     <meta itemprop="description" content="新概念音游" />
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, width=device-width,target-densitydpi=device-dpi" />
@@ -18,7 +18,12 @@
     $_SESSION['t'] = $str;
     echo "<script>var tj='" . $str . "'</script>";
     ?>
-    <script src="./static/index.js"></script>
+    <script src="./static/in.js"></script>
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1970 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
 </head>
 
 <body onLoad="init()" oncontextmenu=self.event.returnValue=false>
@@ -27,10 +32,13 @@
             <div id="GameScoreLayer-text"></div>
             <div id="GameScoreLayer-score" style="margin:10px 0;">得分</div>
             <div id="GameScoreLayer-bast">最佳</div>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="replayBtn()">重来</button>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="goRank();">排行</button>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/EatKano'">开源(原版)</button>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://github.com/arcxingye/Boom_DGEHS'">开源(实验版)</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="replayBtn()">重新开始</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="goRank();">排行榜</button>
+            <br/>
+            <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href = 'https://test.ke-lejun.xyz/special-mode'">特殊模式</button>
+            <br/>
+            <br/>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://test.ke-lejun.xyz/open'">开源与参考的程序</button>
         </div>
     </div>
     </div>
@@ -45,30 +53,34 @@
                 </div>
                 <br />
                 <div id="btn_group" style="display: block;">
-                    <button type="button" id="ready-btn" class="btn btn-primary loading btn-lg">点击开始</button>
-                    <br /><br />
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="show_setting()">排行榜昵称及PC按键设置</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="show_setting()">点击开始</button>
+                    <br/>
+                    <br/>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href = 'https://test.ke-lejun.xyz/special-mode'">特殊模式</button>
+                    <br/>
+                    <br/>
+                    <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://test.ke-lejun.xyz/rank.php'">排行榜</button>
                 </div>
                 <div id="setting" style="display: none;">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">昵称</span>
                         </div>
-                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于纪录排行(特殊字符会被过滤)">
+                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于记录排行(特殊字、符会过滤)">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">留言</span>
+                            <span class="input-group-text" id="basic-addon1">签名</span>
                         </div>
-                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁广告/脏话(本项可不填)">
+                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁广告/脏话(选填)">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">按键</span>
                         </div>
-                        <input type="text" id="keyboard" class="form-control" maxlength=4 placeholder="默认为DFJK，PC端键盘使用">
+                        <input type="text" id="keyboard" class="form-control" maxlength=4 placeholder="默认为DFJK，PC 使用，不区分大小写">
                     </div>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="show_btn();save_cookie();">完成</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="show_btn();save_cookie();closeWelcomeLayer();">开始游戏  > </button> 
                 </div>
             </div>
         </div>

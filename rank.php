@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>炸掉实验-排行榜</title>
+  <title>来看神仙 | 炸实验 - 排行榜</title>
   <meta item="description" content="来看神仙" />
   <meta charset="utf-8" />
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0" />
@@ -16,7 +16,7 @@
   $max_pages = 9;
   $lbtype = isset($_GET['lbtype']) ? $_GET['lbtype'] : 'day';
   //每页显示数量
-  $num = 30;
+  $num = 50;
   $CurrentPage = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
   $CurrentUser = $_GET['name'];
   $offset = ($CurrentPage - 1) * $num;
@@ -35,15 +35,23 @@
   ?>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="https://test.ke-lejun.xyz/">返回</a></li>
+        <li class="breadcrumb-item">
+            <a href="https://test.ke-lejun.xyz/"><img src="back.svg" width="30" height="30"/>返回</a>
+        </li>
     </ol>
   </nav>
   <div class="page-header text-center">
     <h1>排行榜 - <?php echo $title; ?>榜</h1>
+     <p><del>抢叮当生意的表白墙</del></p>
     <a href="?lbtype=day<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">日榜</button></a>
     <a href="?lbtype=week<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">周榜</button></a>
     <a href="?lbtype=month<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">月榜</button></a>
-    <br/>tips:大家不要作弊哦~ฅ'ω'ฅ♪ 另外，如果你未在游戏前填写昵称，你的记录就不会上榜 awa
+    <br/>
+    <br/>
+    注: 如果你未在游戏前填写昵称，你的记录就不会上榜
+    <a href="https://pic.ke-lejun.xyz/2022/01/26/87ae02c3-1da6-41e6-b460-452977772866.mp4"> 恢复我的记录 <a/>
+    <br/>
+    <br/>
   </div>
   <div class="list-group">
     <?php
@@ -58,9 +66,9 @@
       while ($data_stmt->fetch()) {
         $rank += 1;
         echo "<a href='#' class='list-group-item list-group-item-action'><div class='d-flex w-100 justify-content-between'>
-            <h5 class='mb-1'>第" . $rank . "名   " . $name . "  " . $score . "分</h5><small>" . $time . "</small></div>
+            <h5 class='mb-1'>第" . $rank . "名  -  " . $score . " 分  -  " . $name . "</h5><small>" . $time . "</small></div>
             <p class='mb-1'>尝试了" . $attempts . "次 - " . $system . " - " . $area . "</p>
-            <small>" . ($message ? $message : "这个人很懒什么也没留下，也不知道是怎么考生重点中学的") . "</small></a>";
+            <small>" . ($message ? $message : "这个人懒的一批，什么也不留，这么懒也不知道是怎么考上重点中学的") . "</small></a>";
       }
       $data_stmt->close();
     }
@@ -97,7 +105,6 @@
       <div style='padding:0.2em 1em;'>
         <?php
         if ($CurrentUser) {
-          //查询当前名字历史记录
           $score_sql = "SELECT score,time,attempts FROM " . $ranking . " where name=?";
           $score_stmt = $link->prepare($score_sql);
           $score_stmt->bind_param("s", $CurrentUser);
