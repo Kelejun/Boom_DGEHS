@@ -441,10 +441,10 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
             SubmitResults();
         }
 
-        if (cps <= 5) return '“搞事被宿管抓走，扣分”<br/>';
-        if (cps <= 8) return '“三栋已成废墟[lay in ruins]”<br/>';
-        if (cps <= 10)  return '“塔中已升天”<br/>';
-        if (cps <= 15) return '“从此再无大塘头村”<br/>';
+        if (score <= 19) return '“搞事被宿管抓走，扣分”<br/>';
+        if (score <= 59) return '“三栋已成废墟[lay in ruins]”<br/>';
+        if (score <= 109)  return '“塔中已升天”<br/>';
+        if (score <= 169) return '“从此再无大塘头村”<br/>';
         return '“东莞都没了草”<br/>';
     }
 
