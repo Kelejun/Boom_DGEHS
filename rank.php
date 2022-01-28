@@ -48,8 +48,8 @@
     <a href="?lbtype=month<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">月榜</button></a>
     <br/>
     <br/>
-    注: 如果你未在游戏前填写昵称，你的记录就不会上榜
-    <a href="https://pic.ke-lejun.xyz/2022/01/26/87ae02c3-1da6-41e6-b460-452977772866.mp4"> 恢复我的记录 <a/>
+    注: 只有普通模式的分数才会参与排名。
+    <a href="https://pic.ke-lejun.xyz/2022/01/26/87ae02c3-1da6-41e6-b460-452977772866.mp4"> 恢复未保存记录 <a/>
     <br/>
     <br/>
   </div>

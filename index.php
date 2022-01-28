@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
     <title>炸实验</title>
@@ -7,37 +7,31 @@
     <meta itemprop="description" content="新概念音游" />
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, width=device-width,target-densitydpi=device-dpi" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="./static/index.css" rel="stylesheet" type="text/css">
     <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <script src="https://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
-    <?php
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<?php
     session_start();
     $str = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'), 0, 8);
     $_SESSION['t'] = $str;
     echo "<script>var tj='" . $str . "'</script>";
     ?>
-    <script src="./static/in.js"></script>
-    <meta http-equiv="cache-control" content="max-age=0" />
-    <meta http-equiv="cache-control" content="no-cache" />
-    <meta http-equiv="expires" content="0" />
-    <meta http-equiv="expires" content="Tue, 01 Jan 1970 1:00:00 GMT" />
-    <meta http-equiv="pragma" content="no-cache" />
 </head>
 
 <body onLoad="init()" oncontextmenu=self.event.returnValue=false>
     <div id="GameScoreLayer" class="BBOX SHADE bgc1" style="display:none;">
         <div style="padding:5%;margin-top: 200px;background-color: rgba(125, 181, 216, 0.3);">
             <div id="GameScoreLayer-text"></div>
+            <div id="GameScoreLayer-CPS" style="margin:5px 0;"></div>
             <div id="GameScoreLayer-score" style="margin:10px 0;">得分</div>
             <div id="GameScoreLayer-bast">最佳</div>
-            <button type="button" class="btn btn-primary btn-lg" onclick="replayBtn()">重新开始</button>
-            <button type="button" class="btn btn-primary btn-lg" onclick="goRank();">排行榜</button>
-            <br/>
-            <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href = 'https://test.ke-lejun.xyz/special-mode'">特殊模式</button>
-            <br/>
-            <br/>
+            <button type="button" class="btn btn-primary btn-lg" onclick="window.location.reload()">重来</button>
+			<button type="button" class="btn btn-primary btn-lg" onclick="goRank();">排行榜</button>
+			<br/>
             <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://test.ke-lejun.xyz/open'">开源与参考的程序</button>
         </div>
     </div>
@@ -47,44 +41,66 @@
         <div class="FILL BOX-M" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:5;">
             <div style="margin:0 8% 0 9%;">
                 <div style="font-size:2.6em; color:#FEF002;">新概念音游</div><br />
-                <div style="font-size:2.2em; color:#fff; line-height:1.5em;">
+                <div id="desc" style="display: block;font-size:2.2em; color:#fff; line-height:1.5em;">
                     从最底下的电箱开始<br />
-                    看看你20秒能炸多少个<br />
+                    看你能炸多少个<br />
                 </div>
                 <br />
                 <div id="btn_group" style="display: block;">
-                    <button type="button" class="btn btn-primary btn-lg" onclick="show_setting()">点击开始</button>
+                    <a class="btn btn-primary btn-lg" onclick="show_setting()">开始游戏</a>
+                    <br/><br/>
+
+                    <div class="dropdown">
+                        <a class="btn btn-secondary btn-lg" href="javascript: void(0);" role="button" id="mode" data-bs-toggle="dropdown" aria-expanded="false">普通模式</a>
+                        <ul class="dropdown-menu" aria-labelledby="mode">
+                            <li><a class="dropdown-item" onclick="changeMode(MODE_NORMAL)">普通模式</a></li>
+                            <li><a class="dropdown-item" onclick="changeMode(MODE_ENDLESS)">无尽模式</a></li>
+                            <li><a class="dropdown-item" onclick="changeMode(MODE_PRACTICE)">练习模式</a></li>
+                            <li><a class="dropdown-item" onclick="window.location.href='https://test.ke-lejun.xyz/special-mode'">特殊模式</a></li>
+                        </ul>
+                    </div>
                     <br/>
-                    <br/>
-                    <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href = 'https://test.ke-lejun.xyz/special-mode'">特殊模式</button>
-                    <br/>
-                    <br/>
-                    <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://test.ke-lejun.xyz/rank.php'">排行榜</button>
+                    <a class="btn btn-secondary btn-lg" onclick="window.location.href='https://test.ke-lejun.xyz/rank.php'">排行榜</a>
                 </div>
                 <div id="setting" style="display: none;">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">按键</span>
+                        </div>
+                        <input type="text" id="keyboard" class="form-control" maxlength=4 placeholder="默认为DFJK">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">昵称</span>
                         </div>
-                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于记录排行(特殊字、符会过滤)">
+                        <input type="text" id="username" class="form-control" maxlength=8 placeholder="用于纪录排行(特殊字符会被过滤)">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">签名</span>
                         </div>
-                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁广告/脏话(选填)">
+                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁广告/脏话(本项可不填)">
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="container mb-3" hidden="hidden">
+                        <input type="button" class="btn btn-secondary btn-lg" onclick="getClickBeforeImage()" value="设置点击前的图" style="left: 0">
+                        <input type="file" id="click-before-image" accept="image/*" style="display: none;" onchange="saveClickBeforeImage()">
+                        <input type="button" class="btn btn-secondary btn-lg" onclick="getClickAfterImage()" value="设置点击后的图" style="right: 0">
+                        <input type="file" id="click-after-image" accept="image/*" style="display: none;" onchange="saveClickAfterImage()">
+                    </div>
+                    <div class="input-group mb-3" hidden="hidden">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">按键</span>
+                            <span class="input-group-text" id="basic-addon1">标题</span>
                         </div>
-                        <input type="text" id="keyboard" class="form-control" maxlength=4 placeholder="默认为DFJK，PC 使用，不区分大小写">
+                        <input type="text" id="title" class="form-control" placeholder="吃掉小鹿乃">
                     </div>
-                    <button type="button" class="btn btn-primary btn-lg" onclick="show_btn();save_cookie();closeWelcomeLayer();">开始游戏  > </button> 
+                    <br/>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="show_btn();save_cookie();closeWelcomeLayer();">开始游戏 > </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="./static/indexjsfile.js"></script>
 </body>
 
 </html>
