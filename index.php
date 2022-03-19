@@ -32,7 +32,7 @@
             <button type="button" class="btn btn-primary btn-lg" onclick="window.location.reload()">重来</button>
 			<button type="button" class="btn btn-primary btn-lg" onclick="goRank();">排行榜</button>
 			<br/>
-            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://test.ke-lejun.xyz/open'">开源与参考的程序</button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="window.location.href='https://boom.dgehs.top/open'">开源与参考的程序</button>
         </div>
     </div>
     </div>
@@ -56,11 +56,11 @@
                             <li><a class="dropdown-item" onclick="changeMode(MODE_NORMAL)">普通模式</a></li>
                             <li><a class="dropdown-item" onclick="changeMode(MODE_ENDLESS)">无尽模式</a></li>
                             <li><a class="dropdown-item" onclick="changeMode(MODE_PRACTICE)">练习模式</a></li>
-                            <li><a class="dropdown-item" onclick="window.location.href='https://test.ke-lejun.xyz/special-mode'">特殊模式</a></li>
+                            <li><a class="dropdown-item" onclick="window.location.href='https://boom.dgehs.top/special-mode'">特殊模式</a></li>
                         </ul>
                     </div>
                     <br/>
-                    <a class="btn btn-secondary btn-lg" onclick="window.location.href='https://test.ke-lejun.xyz/rank.php'">排行榜</a>
+                    <a class="btn btn-secondary btn-lg" onclick="window.location.href='https://boom.dgehs.top/rank.php?lbtype=month'">排行榜</a>
                 </div>
                 <div id="setting" style="display: none;">
                     <div class="input-group mb-3">
@@ -79,7 +79,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">签名</span>
                         </div>
-                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁广告/脏话(本项可不填)">
+                        <input type="text" id="message" class="form-control" maxlength=50 placeholder="禁脏话(本项可不填)">
                     </div>
                     <div class="container mb-3" hidden="hidden">
                         <input type="button" class="btn btn-secondary btn-lg" onclick="getClickBeforeImage()" value="设置点击前的图" style="left: 0">
@@ -91,7 +91,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">标题</span>
                         </div>
-                        <input type="text" id="title" class="form-control" placeholder="吃掉小鹿乃">
+                        <input type="text" id="title" class="form-control" placeholder="炸实验">
                     </div>
                     <br/>
                     <button type="button" class="btn btn-primary btn-lg" onclick="show_btn();save_cookie();closeWelcomeLayer();">开始游戏 > </button>
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <script src="./static/indexjsfile.js"></script>
+    <script src="./static/jsfile.js"></script>
 </body>
 
 </html>

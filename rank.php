@@ -16,7 +16,7 @@
   $max_pages = 9;
   $lbtype = isset($_GET['lbtype']) ? $_GET['lbtype'] : 'day';
   //每页显示数量
-  $num = 50;
+  $num = 100;
   $CurrentPage = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
   $CurrentUser = $_GET['name'];
   $offset = ($CurrentPage - 1) * $num;
@@ -25,18 +25,18 @@
     $cond = "to_days(time) = to_days(now())";
   }
   if ($lbtype == 'week') {
-    $title = "周";
-    $cond = "DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(time)";
+    $title = "月";
+    $cond = "DATE_SUB(CURDATE(), INTERVAL 31 DAY) <= date(time)";
   }
   if ($lbtype == 'month') {
-    $title = "月";
-    $cond = "DATE_SUB(CURDATE(), INTERVAL 30 DAY) <= date(time)";
+    $title = "总";
+    $cond = "DATE_SUB(CURDATE(), INTERVAL 365 DAY) <= date(time)";
   }
   ?>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="https://test.ke-lejun.xyz/"><img src="back.svg" width="30" height="30"/>返回</a>
+            <a href="https://boom.dgehs.top"><img src="back.svg" width="30" height="30"/>返回</a>
         </li>
     </ol>
   </nav>
@@ -44,11 +44,11 @@
     <h1>排行榜 - <?php echo $title; ?>榜</h1>
      <p><del>抢叮当生意的表白墙</del></p>
     <a href="?lbtype=day<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">日榜</button></a>
-    <a href="?lbtype=week<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">周榜</button></a>
-    <a href="?lbtype=month<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">月榜</button></a>
+    <a href="?lbtype=week<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">月榜</button></a>
+    <a href="?lbtype=month<?php echo $CurrentUser ? "&name=" . $CurrentUser : "" ?>"><button type="button" class="btn btn-outline-secondary btn-sm">总榜</button></a>
     <br/>
     <br/>
-    注: 只有普通模式的分数才会参与排名。
+    注: 只有普通模式的分数才会参与排名。如果名字重复使用，只会记录第一个使用改名字的人的记录，并且只有打破自己保持的个人记录才会更新。
     <a href="https://pic.ke-lejun.xyz/2022/01/26/87ae02c3-1da6-41e6-b460-452977772866.mp4"> 恢复未保存记录 <a/>
     <br/>
     <br/>
